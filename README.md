@@ -1,117 +1,94 @@
 # python-CBC-APP
 A Python Tkinter desktop app to input and analyze CBC parameters, providing automated diagnostic feedback and interactive visual results for anemia, erythrocytosis, leukopenia, and infection indicators.
-Project Overview
+import tkinter as tk
+from tkinter import messagebox
 
-This application allows users to input key CBC parameters:
+class CBCApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Hematology CBC Parameter App")
 
-Red Blood Cell Count (RBC)
+        # Create input fields for CBC parameters
+        self.red_blood_cell_count_label = tk.Label(root, text="Red Blood Cell Count (cells/L):")
+        self.red_blood_cell_count_label.pack()
+        self.red_blood_cell_count_entry = tk.Entry(root)
+        self.red_blood_cell_count_entry.pack()
 
-Hemoglobin (Hb)
+        self.hemoglobin_label = tk.Label(root, text="Hemoglobin (grams/dL):")
+        self.hemoglobin_label.pack()
+        self.hemoglobin_entry = tk.Entry(root)
+        self.hemoglobin_entry.pack()
 
-Hematocrit (Hct)
+        self.hematocrit_label = tk.Label(root, text="Hematocrit (%):")
+        self.hematocrit_label.pack()
+        self.hematocrit_entry = tk.Entry(root)
+        self.hematocrit_entry.pack()
 
-White Blood Cell Count (WBC)
+        self.white_blood_cell_count_label = tk.Label(root, text="White Blood Cell Count (cells/L):")
+        self.white_blood_cell_count_label.pack()
+        self.white_blood_cell_count_entry = tk.Entry(root)
+        self.white_blood_cell_count_entry.pack()
 
-It evaluates these inputs against standard reference ranges and flags potential conditions:
+        # Create button to submit input values
+        self.submit_button = tk.Button(root, text="Submit", command=self.analyze_cbc)
+        self.submit_button.pack()
 
-Anemia (low RBC, Hb, or Hct)
+        # Create label to display diagnosis
+        self.diagnosis_label = tk.Label(root, text="")
+        self.diagnosis_label.pack()
 
-Erythrocytosis (high RBC, Hb, or Hct)
+        # Create animated character
+        self.character_label = tk.Label(root, text="", font=("Arial", 24))
+        self.character_label.pack()
 
-Leukopenia (low WBC)
+    def analyze_cbc(self):
+        # Get input values
+        red_blood_cell_count = float(self.red_blood_cell_count_entry.get())
+        hemoglobin = float(self.hemoglobin_entry.get())
+        hematocrit = float(self.hematocrit_entry.get())
+        white_blood_cell_count = float(self.white_blood_cell_count_entry.get())
 
-Infection or inflammation (high WBC)
+        # Analyze CBC parameters
+        diagnosis = ""
+        if red_blood_cell_count < 4.35e12:
+            diagnosis += "Anemia (low red blood cell count)\n"
+        elif red_blood_cell_count > 5.65e12:
+            diagnosis += "Erythrocytosis (high red blood cell count)\n"
 
-An interactive emoji character reacts to the diagnosis, providing an intuitive and engaging way to interpret results.
+        if hemoglobin < 13.2:
+            diagnosis += "Anemia (low hemoglobin)\n"
+        elif hemoglobin > 16.6:
+            diagnosis += "Erythrocytosis (high hemoglobin)\n"
 
-Features
+        if hematocrit < 38.3:
+            diagnosis += "Anemia (low hematocrit)\n"
+        elif hematocrit > 48.6:
+            diagnosis += "Erythrocytosis (high hematocrit)\n"
 
-Input and validation of CBC parameters
+        if white_blood_cell_count < 3.4e9:
+            diagnosis += "Leukopenia (low white blood cell count)\n"
+        elif white_blood_cell_count > 9.6e9:
+            diagnosis += "Infection or inflammation (high white blood cell count)\n"
 
-Automated diagnostic feedback
+        # Display diagnosis
+        self.diagnosis_label.config(text=diagnosis)
 
-Real-time results displayed with emoji visualizations
+        # Animate character
+        self.animate_character(diagnosis)
 
-User-friendly GUI using Tkinter
+    def animate_character(self, diagnosis):
+        if "Anemia" in diagnosis:
+            self.character_label.config(text="😓", font=("Arial", 48))
+        elif "Erythrocytosis" in diagnosis:
+            self.character_label.config(text="🤯", font=("Arial", 48))
+        elif "Leukopenia" in diagnosis:
+            self.character_label.config(text="😕", font=("Arial", 48))
+        elif "Infection or inflammation" in diagnosis:
+            self.character_label.config(text="🤒", font=("Arial", 48))
+        else:
+            self.character_label.config(text="😊", font=("Arial", 48))
 
-Lightweight, standalone desktop application
+root = tk.Tk()
+app = CBCApp(root)
+root.mainloop()
 
-Skills Demonstrated
-
-Python programming & object-oriented design
-
-GUI development with Tkinter
-
-Rule-based data analysis and logic implementation
-
-User experience enhancement through interactive visual elements
-
-Translating clinical data into actionable insights
-
-Installation
-
-Clone the repository:
-
-git clone <repository-url>
-
-
-Navigate to the project folder:
-
-cd CBC-Analyzer
-
-
-Run the application:
-
-python cbc_app.py
-
-
-Note: Requires Python 3.x. Tkinter comes pre-installed with Python.
-
-Usage
-
-Launch the application.
-
-Enter CBC parameters in the input fields.
-
-Click Submit to get instant diagnostic feedback.
-
-Observe the emoji character representing your results.
-
-Emoji Examples:
-
-😓 → Anemia detected
-
-🤯 → Erythrocytosis detected
-
-😕 → Leukopenia detected
-
-🤒 → Infection or inflammation detected
-
-😊 → All values normal
-
-Screenshots / Demo
-
-Add screenshots or a GIF demo here for visual clarity.
-
-
-
-
-
-
-Future Improvements
-
-Include additional CBC parameters (platelets, MCV, MCH)
-
-Add age/gender-specific reference ranges
-
-Include graphical trend visualizations for historical data
-
-Export results as PDF or CSV for record keeping
-
-License
-
-This project is open-source under the MIT License.
-
-Impact Statement
-
-This project demonstrates the ability to analyze clinical data, automate diagnostics, and present results interactively, highlighting skills in Python programming, data analysis, and GUI development—perfect for health tech, data analytics, and medical informatics portfolios.
